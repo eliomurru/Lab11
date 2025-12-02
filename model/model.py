@@ -6,6 +6,7 @@ class Model:
     def __init__(self):
         self.G = nx.Graph()
         self.lista_rifugi = []
+        self.rifugi_map = {}
 
     def build_graph(self, year: int):
         """
@@ -15,7 +16,13 @@ class Model:
         :param year: anno limite fino al quale selezionare le connessioni da includere.
         """
         # TODO
+        self.G.clear()
+
         self.lista_rifugi = DAO.get_rifugi(year)
+        self.rifugi_map = {r.id: r for r in self.lista_rifugi}
+
+        for r in self.rifugi_map.keys():
+            self.G.add_node(r)
 
     def get_nodes(self):
         """
