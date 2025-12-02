@@ -5,6 +5,7 @@ from database.dao import DAO
 class Model:
     def __init__(self):
         self.G = nx.Graph()
+        self.lista_rifugi = []
 
     def build_graph(self, year: int):
         """
@@ -14,6 +15,7 @@ class Model:
         :param year: anno limite fino al quale selezionare le connessioni da includere.
         """
         # TODO
+        self.lista_rifugi = DAO.get_rifugi(year)
 
     def get_nodes(self):
         """
@@ -21,6 +23,7 @@ class Model:
         :return: lista dei rifugi presenti nel grafo.
         """
         # TODO
+        return self.lista_rifugi
 
     def get_num_neighbors(self, node):
         """
