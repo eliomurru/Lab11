@@ -7,6 +7,8 @@ class Model:
         self.G = nx.Graph()
         self.lista_rifugi = []
         self.rifugi_map = {}
+        self.lista_sentieri = []
+        self.sentieri_map = {}
 
     def build_graph(self, year: int):
         """
@@ -20,9 +22,13 @@ class Model:
 
         self.lista_rifugi = DAO.get_rifugi(year)
         self.rifugi_map = {r.id: r for r in self.lista_rifugi}
-
-        for r in self.rifugi_map.keys():
+        for id, r in self.rifugi_map.items():
             self.G.add_node(r)
+
+        self.lista_sentieri = DAO.read_sentieri(year)
+        self.sentieri_map = {s.idSentiero: (s.id1, s.id2) for s in self.lista_sentieri}
+        for s in self.lista_sentieri:
+            self.G.add_edge(s.id1, s.id2)
 
     def get_nodes(self):
         """
@@ -39,6 +45,7 @@ class Model:
         :return: numero di vicini diretti del nodo indicato
         """
         # TODO
+        return len(list(self.G.neighbors(node)))
 
     def get_num_connected_components(self):
         """
@@ -46,6 +53,7 @@ class Model:
         :return: numero di componenti connesse
         """
         # TODO
+        return nx.number_connected_components(self.G)
 
     def get_reachable(self, start):
         """

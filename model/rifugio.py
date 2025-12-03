@@ -5,7 +5,6 @@ from dataclasses import dataclass
 class Rifugio:
     id : int
     nome : str
-    vicini : int
 
 
     def __eq__(self, other):
