@@ -5,6 +5,7 @@ from dataclasses import dataclass
 class Rifugio:
     id : int
     nome : str
+    localita : str
 
 
     def __eq__(self, other):
@@ -14,7 +15,7 @@ class Rifugio:
         return hash(self.id)
 
     def __str__(self):
-        return f"{self.nome}"
+        return f"[{self.id}] {self.nome} ({self.localita})"
 
     def __repr__(self):
-        return f"{self.nome}"
+        return f"[{self.id}] {self.nome} ({self.localita})"

@@ -16,7 +16,7 @@ class DAO:
             """
         conn = DBConnect.get_connection()
         cursor = conn.cursor(dictionary=True)
-        query = """SELECT r.id , r.nome
+        query = """SELECT r.id , r.nome , r.localita
                  FROM connessione c , rifugio r 
                  WHERE c.anno <= %s AND ( c.id_rifugio1 = r.id OR c.id_rifugio2 = r.id )
                  GROUP BY r.id """
@@ -28,6 +28,7 @@ class DAO:
             rifugio = Rifugio(
                 id=rifugio['id'],
                 nome=rifugio['nome'],
+                localita=rifugio['localita'],
             )
             lista_rifugi.append(rifugio)
 

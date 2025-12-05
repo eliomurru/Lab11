@@ -1,3 +1,5 @@
+import copy
+
 import networkx as nx
 from database.dao import DAO
 
@@ -28,7 +30,7 @@ class Model:
         self.lista_sentieri = DAO.read_sentieri(year)
         self.sentieri_map = {s.idSentiero: (s.id1, s.id2) for s in self.lista_sentieri}
         for s in self.lista_sentieri:
-            self.G.add_edge(s.id1, s.id2)
+            self.G.add_edge(self.rifugi_map[s.id1], self.rifugi_map[s.id2])
 
     def get_nodes(self):
         """
@@ -73,3 +75,43 @@ class Model:
         """
 
         # TODO
+
+        #DFS_TREE()
+        dfs = nx.dfs_tree(self.G, start)
+        lista_dfs = [n for n in dfs.nodes if n != start]
+
+        #BFS_TREE()
+        bfs = nx.bfs_tree(self.G, start)
+        lista_bfs = [n for n in bfs.nodes if n != start]
+
+        #ALGORITMO ITERATIVO
+        visited_iter = set()
+        stack = [start]
+        while stack:
+            node = stack.pop()
+            if node not in visited_iter:
+                visited_iter.add(node)
+                for neigh in self.G.neighbors(node):
+                    if neigh not in visited_iter:
+                        stack.append(neigh)
+
+        visited_iter.discard(start)
+        visited_iter = list(visited_iter)
+
+        #ALGORITMO RICORSIVO
+        visited_set_ric = set()
+
+        def dfs(node):
+            visited_set_ric.add(node)
+            for neigh in self.G.neighbors(node):
+                if neigh not in visited_set_ric:
+                    dfs(neigh)
+        dfs(start)
+        visited_ric = list(visited_set_ric)
+        visited_ric.remove(start)
+
+        '''
+        Ora possimamo scegliere quello che vogliamo tra:
+        lista_dfs, lista_bfs, visited_iter, visited_ric
+        '''
+        return visited_ric
